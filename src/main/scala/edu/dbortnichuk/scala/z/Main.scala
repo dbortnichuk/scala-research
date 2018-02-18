@@ -2,6 +2,6 @@ package edu.dbortnichuk.scala.z
 
 object Main extends App {
 
-  println("Hello4br")
+  println("Hello4br1")
 
 }
