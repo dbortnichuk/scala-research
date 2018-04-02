@@ -1,15 +1,26 @@
-package edu.dbortnichuk.scala
-
-object Become {
-
-}
+package edu.dbortnichuk.scala.akka
 
 import akka.actor.{Actor, ActorSystem, Props}
-import edu.dbortnichuk.scala.PassengerCountActor.NumberOfPassengers.Get
-import edu.dbortnichuk.scala.PassengerCountActor.{Enter, Leave, NumberOfPassengers}
+import edu.dbortnichuk.scala.akka.PassengerCountActor.{Enter, Leave, NumberOfPassengers}
+import edu.dbortnichuk.scala.akka.PassengerCountActor.NumberOfPassengers.Get
 
-import scala.concurrent.Future
 
+object AkkaTest extends App {
+
+  val system = ActorSystem("ActorSystem")
+
+  val userStorage = system.actorOf(Props[PassengerCountActor], "PassengerCountActor")
+
+  userStorage ! Enter
+  userStorage ! Enter
+  //userStorage ! Leave
+  userStorage ! Get
+
+  Thread.sleep(1000)
+  system.terminate()
+
+
+}
 
 class PassengerCountActor extends Actor {
   override def receive: Receive = handleMessage(0)
@@ -35,22 +46,5 @@ object PassengerCountActor {
     case object Get
     case class Result(numberOfPassengers: Int)
   }
-
-}
-
-object Main extends App {
-
-  val system = ActorSystem("ActorSystem")
-
-  val userStorage = system.actorOf(Props[PassengerCountActor], "PassengerCountActor")
-
-  userStorage ! Enter
-  userStorage ! Enter
-  //userStorage ! Leave
-  userStorage ! Get
-
-  Thread.sleep(1000)
-  system.terminate()
-
 
 }
